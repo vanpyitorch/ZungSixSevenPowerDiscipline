@@ -1,14 +1,15 @@
 extends CharacterBody3D
 
-const SPEED = 15.0
-const JUMP_VELOCITY = 10.0
-const LANE_SPEED = 15.0
+const SPEED = 10.0 # Было 15.0, сделали 8.0
+const JUMP_VELOCITY = 12.0 # Прыжок чуть выше
+const LANE_SPEED = 10.0 # Плавнее перестраивалась
 const LANE_WIDTH = 2.5
 var current_lane = 0
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _physics_process(delta):
+	print("Диона: X=", position.x, " Y=", position.y, " Z=", position.z)
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 
@@ -25,5 +26,5 @@ func _physics_process(delta):
 	
 	velocity.z = -SPEED
 	velocity.x = target_velocity_x
-
+	print("Игрок Z: ", position.z, " | Камера Z: ", $Camera3D.global_position.z)
 	move_and_slide()
