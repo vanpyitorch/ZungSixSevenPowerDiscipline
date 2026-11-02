@@ -9,7 +9,6 @@ var current_lane = 0
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _physics_process(delta):
-	print("Диона: X=", position.x, " Y=", position.y, " Z=", position.z)
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 

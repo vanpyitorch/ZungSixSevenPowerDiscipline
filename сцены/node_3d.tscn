@@ -69,3 +69,5 @@ script = SubResource("GDScript_emt5t")
 [node name="RoadGenerator" type="Node3D" parent="." unique_id=187746316]
 script = ExtResource("7_eqihr")
 track_scene = ExtResource("5_drmyu")
+track_length = 4.5
+lane_width = 1.0
