@@ -34,17 +34,13 @@ func spawn_three_lanes(z_pos):
 	tracks.append(right)
 
 func _process(delta):
-	# Двигаем все рельсы
+	# Считаем общую длину всей очереди (сколько рельс * их длину)
+	var total_length = num_tracks * track_length
+	
 	for track in tracks:
 		track.position.z += speed * delta
 		
-		# Если рельса улетела за спину (Z > 20)
+		# Если рельса улетела за спину
 		if track.position.z > 20.0:
-			# Находим самую дальнюю рельсу
-			var min_z = 0.0
-			for t in tracks:
-				if t.position.z < min_z:
-					min_z = t.position.z
-			
-			# Телепортируем улетевшую рельсу в конец очереди
-			track.position.z = min_z - track_length
+			# Просто сдвигаем её на всю длину очереди назад
+			track.position.z -= total_length
