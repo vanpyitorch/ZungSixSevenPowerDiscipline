@@ -4,6 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://bgmt8t15845w3" path="res://assets/runner/Diona time skip.glb" id="2_efx61"]
 [ext_resource type="PackedScene" uid="uid://cwm0rsmcxchis" path="res://сцены/EnvironmentPart.tscn" id="2_i4h8e"]
 [ext_resource type="Script" uid="uid://cxdgddo50rduv" path="res://сцены/environment_part.gd" id="4_i4h8e"]
+[ext_resource type="PackedScene" uid="uid://botucwpliscw6" path="res://assets/railroad-straight.glb" id="5_drmyu"]
+[ext_resource type="Script" uid="uid://j4rceqsgpu1c" path="res://сцены/road_generator.gd" id="7_eqihr"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xrivr"]
 radius = 0.36572266
@@ -12,6 +14,22 @@ height = 1.2550669
 [sub_resource type="BoxShape3D" id="BoxShape3D_xrivr"]
 size = Vector3(20, 0.84716797, 200)
 
+[sub_resource type="GDScript" id="GDScript_emt5t"]
+script/source = "extends Node3D
+
+@export var speed: float = 15.0
+@export var chunk_length: float = 10.0 # Длина одной рельсы!
+@export var total_length: float = 100.0 # Общая длина ВСЕЙ очереди (кол-во рельс * длину)
+
+func _process(delta):
+	position.z += speed * delta
+	
+	# Если рельса улетела за спину
+	if position.z > 10.0:
+		# Телепортируем её на всю длину очереди назад
+		position.z -= total_length
+"
+
 [node name="Node3D" type="CharacterBody3D" unique_id=1206255341]
 script = ExtResource("1_lcbl3")
 
@@ -19,7 +37,7 @@ script = ExtResource("1_lcbl3")
 transform = Transform3D(-1, 0, -8.742278e-08, -1.7763568e-15, 1, 0, 8.742278e-08, 0, -1, 0, -2.3841858e-07, 0)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=700515421]
-transform = Transform3D(1, 0, 0, 0, 0.9659258, 0.25881904, 0, -0.25881904, 0.9659258, 0, 3, 8)
+transform = Transform3D(1, 0, 0, 0, 0.9659259, 0.25881907, 0, -0.25881907, 0.9659258, 0, 1.6751399, 4.189912)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1837949030]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.600134, 0)
@@ -29,9 +47,25 @@ shape = SubResource("CapsuleShape3D_xrivr")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 
 [node name="Node3D" parent="StaticBody3D" unique_id=921864234 instance=ExtResource("2_i4h8e")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -40)
 script = ExtResource("4_i4h8e")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=374334435]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.076416016, 0)
 shape = SubResource("BoxShape3D_xrivr")
+
+[node name="railroad-straight2" parent="." unique_id=622209324 instance=ExtResource("5_drmyu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9307505, 0)
+script = SubResource("GDScript_emt5t")
+
+[node name="railroad-straight3" parent="." unique_id=861721540 instance=ExtResource("5_drmyu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.931, 0)
+script = SubResource("GDScript_emt5t")
+
+[node name="railroad-straight4" parent="." unique_id=758768554 instance=ExtResource("5_drmyu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.931, 0)
+script = SubResource("GDScript_emt5t")
+
+[node name="RoadGenerator" type="Node3D" parent="." unique_id=187746316]
+script = ExtResource("7_eqihr")
+track_scene = ExtResource("5_drmyu")
